@@ -20,47 +20,58 @@ const lineStyle = {
   },
 };
 
-const pointStyle = {
-  type: 'circle',
-  paint: {
-    'circle-color': '#ff0000',
-  },
-};
-
 
 class App extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
+      color: '#ff0000',
+      value: '',
+
+      items,
+
       sources: [],
       layers: [],
-      items,
     };
 
     this.handleChange = this.handleChange.bind(this);
+    this.handleColorChange = this.handleColorChange.bind(this);
+    this.updateSourcesLayers = this.updateSourcesLayers.bind(this);
   }
 
   handleChange(event) {
-    if (event.target.value) {
-      const value = parseInt(event.target.value);
-      const item = this.state.items.find(obj => obj.id === value);
+    const value = event.target.value;
 
-      if (item) {
-        const sourceId = `source-${item.id}`;
-        const sources = [{ id: sourceId, data: item.data }];
-        const layers = [
-          { id: `line-layer-${item.id}`, source: sourceId, ...lineStyle },
-          { id: `point-layer-${item.id}`, source: sourceId, ...pointStyle },
-        ];
+    this.setState({ value }, this.updateSourcesLayers);
+  }
 
-        this.setState({ layers, sources });
-      }
-    } else {
-      // the empty choice resets the sources and layers
-      // so that mapbox draws nothing
-      this.setState({ sources: [], layers: [] });
+  handleColorChange(event) {
+    this.setState({ color: event.target.value }, this.updateSourcesLayers);
+  }
+
+  updateSourcesLayers() {
+    const sources = [];
+    const layers = [];
+
+    if (this.state.value) {
+      const itemId = parseInt(this.state.value);
+      const item = this.state.items.find(obj => obj.id === itemId);
+
+      const sourceId = `source-${item.id}`;
+      sources.push({ id: sourceId, data: item.data });
+
+      const pointStyle = {
+        type: 'circle',
+        paint: {
+          'circle-color': this.state.color,
+        },
+      };
+      layers.push({ id: `line-layer-${item.id}`, source: sourceId, ...lineStyle });
+      layers.push({ id: `point-layer-${item.id}`, source: sourceId, ...pointStyle });
     }
+
+    this.setState({ sources, layers });
   }
 
   render() {
@@ -83,6 +94,10 @@ class App extends React.Component {
         <select value={this.state.value} onChange={this.handleChange}>
           <option value="">-----</option>
           {options}
+        </select>
+        <select value={this.state.color} onChange={this.handleColorChange}>
+          <option value="#ff0000">Red</option>
+          <option value="#00ff00">Green</option>
         </select>
       </div>
     );
