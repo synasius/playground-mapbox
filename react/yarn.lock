@@ -2532,6 +2532,17 @@ mapbox-gl-shaders@mapbox/mapbox-gl-shaders#5d7b99a4fd286e8b58a219a4247ca446746a4
   dependencies:
     brfs "^1.4.0"
 
+mapbox-gl-style-spec@^8.9.0:
+  version "8.9.0"
+  resolved "https://registry.yarnpkg.com/mapbox-gl-style-spec/-/mapbox-gl-style-spec-8.9.0.tgz#469237fa3f33d33d40f05de77a60648a2bce3abb"
+  dependencies:
+    csscolorparser "~1.0.2"
+    jsonlint-lines-primitives "~1.6.0"
+    lodash.isequal "^3.0.4"
+    minimist "0.0.8"
+    rw "^0.1.4"
+    sort-object "^0.3.2"
+
 mapbox-gl-style-spec@mapbox/mapbox-gl-style-spec#512126c802dbb8f282e9826b181f0d53da00daf2:
   version "8.9.0"
   resolved "https://codeload.github.com/mapbox/mapbox-gl-style-spec/tar.gz/512126c802dbb8f282e9826b181f0d53da00daf2"

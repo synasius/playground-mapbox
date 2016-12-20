@@ -27,6 +27,7 @@
   },
   "dependencies": {
     "mapbox-gl": "^0.28.0",
+    "mapbox-gl-style-spec": "^8.9.0",
     "react": "^15.4.1",
     "react-dom": "^15.4.1"
   }

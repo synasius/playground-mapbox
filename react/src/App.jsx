@@ -1,7 +1,7 @@
 import React from 'react';
 
 import Map from './MapboxGL/Map';
-import { items } from './data';
+import items from './data';
 
 // this is obtained from https://www.mapbox.com
 const mapboxToken =
@@ -31,7 +31,7 @@ class App extends React.Component {
 
       items,
 
-      sources: [],
+      sources: {},
       layers: [],
     };
 
@@ -51,15 +51,15 @@ class App extends React.Component {
   }
 
   updateSourcesLayers() {
-    const sources = [];
+    const sources = {};
     const layers = [];
 
     if (this.state.value) {
-      const itemId = parseInt(this.state.value);
+      const itemId = parseInt(this.state.value, 10);
       const item = this.state.items.find(obj => obj.id === itemId);
 
       const sourceId = `source-${item.id}`;
-      sources.push({ id: sourceId, data: item.data });
+      sources[sourceId] = item.data;
 
       const pointStyle = {
         type: 'circle',

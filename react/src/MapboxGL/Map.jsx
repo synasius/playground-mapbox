@@ -1,5 +1,6 @@
 import React from 'react';
 import mapboxgl from 'mapbox-gl/dist/mapbox-gl';
+import diffStyles from 'mapbox-gl-style-spec/lib/diff';
 
 
 class Map extends React.Component {
@@ -14,8 +15,12 @@ class Map extends React.Component {
     });
 
     map.on('load', () => {
-      this.addSources(this.props.sources);
-      this.addLayers(this.props.layers);
+      // add all sources
+      const sources = Object.entries(this.props.sources);
+      sources.forEach((id, source) => map.addSource(id, source));
+
+      // add all sources
+      this.props.layers.forEach(layer => map.addLayer(layer));
     });
 
     this.map = map;
@@ -23,39 +28,23 @@ class Map extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     // Here we receive the new sources and layers so we
-    // update the map removing all the old source and
-    // adding everything we find in nextProps.
-    // This is the most simple solution but far from being the most efficient.
-    //
-    // We should use this approach instead:
+    // update the map using this approach
     // https://github.com/mapbox/mapbox-gl-style-spec/blob/mb-pages/API.md#diffstylesbefore-after
-    this.removeSources(this.props.sources);
-    this.addSources(nextProps.sources);
-
-    this.removeLayers(this.props.layers);
-    this.addLayers(nextProps.layers);
+    //
+    // A detailed explanation:
+    // https://www.mapbox.com/blog/mapbox-gl-js-reactive/
+    const before = { sources: this.props.sources, layers: this.props.layers };
+    const after = { sources: nextProps.sources, layers: nextProps.layers };
+    const changes = diffStyles(before, after);
+    changes.forEach((change) => {
+      this.map[change.command](...change.args);
+    });
   }
 
   componentWillUnmount() {
     if (this.map) {
       this.map.remove();
     }
-  }
-
-  removeSources(sources) {
-    sources.forEach(source => this.map.removeSource(source.id));
-  }
-
-  addSources(sources) {
-    sources.forEach(source => this.map.addSource(source.id, source.data));
-  }
-
-  removeLayers(layers) {
-    layers.map(layer => this.map.removeLayer(layer.id));
-  }
-
-  addLayers(layers) {
-    layers.map(layer => this.map.addLayer(layer));
   }
 
   render() {
@@ -86,8 +75,8 @@ Map.propTypes = {
   height: React.PropTypes.string,
 
   // data sources and layers
-  sources: React.PropTypes.array,
-  layers: React.PropTypes.array,
+  sources: React.PropTypes.shape({ }),
+  layers: React.PropTypes.arrayOf(),
 };
 
 
