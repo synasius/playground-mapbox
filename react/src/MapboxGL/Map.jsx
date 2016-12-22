@@ -17,7 +17,7 @@ class Map extends React.Component {
     map.on('load', () => {
       // add all sources
       const sources = Object.entries(this.props.sources);
-      sources.forEach((id, source) => map.addSource(id, source));
+      sources.forEach(([id, source]) => map.addSource(id, source));
 
       // add all sources
       this.props.layers.forEach(layer => map.addLayer(layer));
@@ -76,7 +76,9 @@ Map.propTypes = {
 
   // data sources and layers
   sources: React.PropTypes.shape({ }),
-  layers: React.PropTypes.arrayOf(),
+  layers: React.PropTypes.arrayOf(
+    React.PropTypes.shape({ }),
+  ),
 };
 
 
