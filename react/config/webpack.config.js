@@ -55,5 +55,8 @@ module.exports = {
       inject: true,
       template: paths.appHtml,
     }),
+    new webpack.DefinePlugin({
+      MAPBOX_ACCESS_TOKEN: JSON.stringify(process.env.MAPBOX_ACCESS_TOKEN),
+    }),
   ],
 }

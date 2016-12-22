@@ -3,9 +3,11 @@ import React from 'react';
 import Map from './MapboxGL/Map';
 import items from './data';
 
-// this is obtained from https://www.mapbox.com
-const mapboxToken =
-  'pk.eyJ1Ijoic3luYXNpdXMiLCJhIjoiY2lnM3JrdmRjMjJ4b3RqbTNhZ2hmYzlkbyJ9.EA86y0wrXX1eo64lJPTepw';
+
+/* global MAPBOX_ACCESS_TOKEN */
+// To create an access token:
+// https://www.mapbox.com/help/create-api-access-token/
+const mapboxToken = MAPBOX_ACCESS_TOKEN;
 
 
 const lineStyle = {
